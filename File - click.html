@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+#coinButton{
+    width:130px;height: 130px;background-color: yellow;
+}
+
+td{
+    color:#ffffff;text-align:center;
+}
+table{
+    border: solid #964B00;background-color: #222222;
+}
+table, td{
+    border-collapse: collapse;width:350px;
+}
+h1{
+    color: #ffffff;
+}
+p{
+    color: #ffffff;
+}
+body{
+    background-color: #676767;
+}
+button{
+    background-color: #FFFFFF; outline: solid;
+}
+* {
+    font-family: Arial;
+}
+hr{
+    width:100%;
+}
+#warn{
+    color:#eb2323;
+}
+#beginner{
+    background-color:#ecf016;
+}
+#mpBanner{
+    background-color: #9803fc; 
+    border-radius: 10px; 
+    border-style: groove;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+#mpBanner2{
+    background-color: #9803fc; 
+    border-radius: 10px; 
+    border-style: groove;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+    </style>
+</head>
+<body>
+    <center>
+        <hr>
+        <br><h1 style="font-size: 40px;">🪙Coin Clicker🪙</h1><br><p>Coins:</p><p id="currency">0</p><br>
+        <button onclick="coin()" id="coinButton">1 Coins<br></button><br><br><br><br><hr>
+        <table>
+        <tr>
+        <td colspan="2">
+        <div id="shop">
+        <h1 style="text-align: center;">⚙️UPGRADES⚙️</h1><br>
+        </td>
+        </tr>
+        <tr>
+        <td>
+
+        <button onclick="boost()" id="firstBoost">+1 Coin per click</button>
+        <p id="cost">cost: 50 coins</p><br><br>
+
+        <button onclick="auto()" id="autoCoinButton">Autoclicker</button>
+        <p id="autoCoinCost">cost: 200 Coins</p><br><br>
+
+        <button onclick="mult()" id="multiply">2x Multiplier</button>
+        <p id="multCost">cost: 10K coins</p><br><br>
+
+        </td>
+        <td>
+        <button onclick="tenBoost()" id="plusTen">+10 Coin per click</button>
+        <p id="tenCost">cost: 1K coins</p><br><br>
+
+        <button onclick="tenAuto()" id="tenAutoCoinButton" disabled>Upgrade Autoclicker</button>
+        <p id="tenAutoCoinCost">cost: 2K Coins</p><br><br>
+
+        <button onclick="hundredBoost()" id="plusHundred">+100 Coin per click</button>
+        <p id="hundredCost">cost: 3K coins</p><br><br>
+
+        </td>
+        </tr>
+        </table>
+        <br>
+        <hr>
+        <br>
+        <table>
+            <tr>
+            <td colspan="2"><h1 style="color:#65f0fc">💎Diamonds💎</h1><br>
+                    Convert coins to <span style="color:#65f0fc;">Diamonds</span>!
+                <br><br>1K <span>coins</span style="color:#fcf565;"></span> = 1 <span style="color:#65f0fc;">Diamond</span><br><br><input type="number" id="converter" min="1000" size="1" placeholder="Convert Coins Here"><button onclick="convert()">Convert</button><br><br><button onclick="convertAll()">Convert all</button><br><p id="warn"></p><p id="totalDiamonds">Your Diamonds: <p></p><br><p id="Diamonds"></p>
+            </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="aClickerSpeed()" id="aSpeedBoost">Faster Autoclicker</button><br><p id="strikes">(0/3)</p><p id="speedCost">Costs: 1k Diamonds</p>
+                </td>
+                <td>
+                    <button onclick="speedTier2()" id="tier2Speed" disabled>Faster Autoclicker<br>Tier II</button><br><p id="strikes2">(0/3)</p><p id="speedCost2">Costs: 10k Diamonds</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br><button onclick="aHundredBoost()" id="hundredAutoBoost">Stronger Autoclicker I</button><br><p id="aHundredPrice">Costs: 10 Diamonds</p><br>
+                </td>
+                <td>
+                    <br><button onclick="aThousandBoost()" id="thousandAutoBoost">Stronger Autoclicker II</button><br><p id="aThousandPrice">Costs: 1K Diamonds</p><br>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button onclick="magicGate()">Unlock Magic</button><br><p>Costs: 1B diamonds</p>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <hr>
+        <br>
+        <table id="magicTable">
+            
+        </table>
+        <br>
+        <div id="modMenu">
+            <button onclick="clearer()">The reset hammer</button>
+        </div>
+        
+        
+</body>
+<script>
+    function clearer(){
+        localStorage.clear();
+    }
+    function formatNumber(num){
+        if (num >= 1_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000){
+            return (num/1_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000).toFixed(2) + "Spd";
+        }
+         else if (num >= 1_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000){
+            return (num/1_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000).toFixed(2) + "Sxd";
+        }
+         else if (num >= 1_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000){
+            return (num/1_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000).toFixed(2) + "Qid";
+        }
+         else if (num >= 1_000_000_000_000_000_000_000_000_000_000_000_000_000_000){
+            return (num/1_000_000_000_000_000_000_000_000_000_000_000_000_000_000).toFixed(2) + "Qd";
+        }
+         else if (num >= 1_000_000_000_000_000_000_000_000_000_000_000_000_000){
+            return (num/1_000_000_000_000_000_000_000_000_000_000_000_000_000).toFixed(2) + "Td";
+        }
+         else if (num >= 1_000_000_000_000_000_000_000_000_000_000_000_000){
+            return (num/1_000_000_000_000_000_000_000_000_000_000_000_000).toFixed(2) + "Ud";
+        }
+         else if (num >= 1_000_000_000_000_000_000_000_000_000_000_000){
+            return (num/1_000_000_000_000_000_000_000_000_000_000_000).toFixed(2) + "UDc";
+        }
+         else if (num >= 1_000_000_000_000_000_000_000_000_000_000){
+            return (num/1_000_000_000_000_000_000_000_000_000_000).toFixed(2) + "No";
+        }
+         else if (num >= 1_000_000_000_000_000_000_000_000_000){
+            return (num/1_000_000_000_000_000_000_000_000_000).toFixed(2) + "Oc";
+        }
+         else if (num >= 1_000_000_000_000_000_000_000_000){
+            return (num/1_000_000_000_000_000_000_000_000).toFixed(2) + "Sp";
+        }
+         else if (num >= 1_000_000_000_000_000_000_000){
+            return (num/1_000_000_000_000_000_000_000).toFixed(2) + "Sx";
+        }
+         else if (num >= 1_000_000_000_000_000_000){
+            return (num/1_000_000_000_000_000_000).toFixed(2) + "Qi";
+        }
+         else if (num >= 1_000_000_000_000_000){
+            return (num/1_000_000_000_000_000).toFixed(2) + "Qa";
+        }
+         else if (num >= 1_000_000_000_000){
+            return (num/1_000_000_000_000).toFixed(2) + "T";
+        }
+         else if (num >= 1_000_000_000){
+            return (num/1_000_000_000).toFixed(2) + "B";
+        }
+         else if (num >= 1_000_000){
+            return (num/1_000_000).toFixed(2) + "M";
+        }
+         else if (num >= 1_000){
+            return (num/1_000).toFixed(2) + "K";
+        } else {
+            return num.toLocaleString();
+        }
+    }
+    
+let aCoinPrice = 200;
+let aCoin = 0;
+
+let autoCoinTimer = false;
+let autoSpeed = 1000;
+
+let tenAutoCoinPrice = 2000;
+let tenACoinAdd = 10;
+let hundredACoinAdd = 100;
+
+let clickCount = 0;
+let coinClickValue = 100000000000000;
+
+let valueAdd = 1;
+let price = 50;
+
+let tenValueAdd = 10;
+let tenAddPrice = 1000;
+
+let hundredValueAdd = 100;
+let hundredAddPrice = 3000;
+
+let multPrice = 10000;
+let double = 2;
+
+let finishGamePrice = 1_000_000_000_000;
+    
+let aCondition = document.getElementById("autoCoinButton");
+
+let autoInterval = null;
+
+    
+    
+function saveGame(){
+localStorage.setItem('aCoin', aCoin)
+    localStorage.setItem('clickCount',clickCount)
+localStorage.setItem('coinClickValue', coinClickValue)
+
+localStorage.setItem('valueAdd', valueAdd)
+localStorage.setItem('price', price)
+
+localStorage.setItem('tenValueAdd', tenValueAdd)
+localStorage.setItem('tenAddPrice', tenAddPrice)
+
+localStorage.setItem('hundredValueAdd', hundredValueAdd)
+localStorage.setItem('hundredAddPrice', hundredAddPrice)
+
+localStorage.setItem('multPrice', multPrice)
+
+localStorage.setItem('diamonds', diamonds)
+
+localStorage.setItem('aSpeedBoostPrice', aSpeedBoostPrice)
+localStorage.setItem('aSpeedBoostPrice2', aSpeedBoostPrice2)
+
+localStorage.setItem('strike', strike)
+localStorage.setItem('strike2', strike2)
+
+localStorage.setItem('aHundredBoostCost', aHundredBoostCost)
+
+localStorage.setItem('autoSpeed', autoSpeed)
+
+localStorage.setItem('aThousandBoostCost', aThousandBoostCost)
+localStorage.setItem('ThousandACoinAdd', ThousandACoinAdd)
+
+localStorage.setItem('autoCoinTimer', autoCoinTimer)
+
+localStorage.setItem('sLock', sLock)
+localStorage.setItem('sLock2', sLock2)
+
+    }
+
+function loadGame(){
+    if (localStorage.getItem('aCoin') !== null){
+        aCoin = Number(localStorage.getItem('aCoin'));
+    }
+
+if (localStorage.getItem('clickCount') !== null){
+        clickCount = Number(localStorage.getItem('clickCount'));
+    }
+
+if (localStorage.getItem('coinClickValue') !== null){
+        coinClickValue = Number(localStorage.getItem('coinClickValue'));
+    }
+
+
+if (localStorage.getItem('valueAdd') !== null){
+        valueAdd = Number(localStorage.getItem('valueAdd'));
+    }
+
+
+if (localStorage.getItem('price') !== null){
+        price = Number(localStorage.getItem('price'));
+    }
+
+
+if (localStorage.getItem('tenValueAdd') !== null){
+        tenValueAdd = Number(localStorage.getItem('tenValueAdd'));
+    }
+
+
+if (localStorage.getItem('tenAddPrice') !== null){
+        tenAddPrice = Number(localStorage.getItem('tenAddPrice'));
+    }
+
+
+if (localStorage.getItem('hundredValueAdd') !== null){
+        hundredValueAdd = Number(localStorage.getItem('hundredValueAdd'));
+    }
+
+
+if (localStorage.getItem('hundredAddPrice') !== null){
+        hundredAddPrice = Number(localStorage.getItem('hundredAddPrice'));
+    }
+
+
+if (localStorage.getItem('multPrice') !== null){
+        multPrice = Number(localStorage.getItem('multPrice'));
+    }
+
+
+if (localStorage.getItem('diamonds') !== null){
+        diamonds = Number(localStorage.getItem('diamonds'));
+    }
+
+
+if (localStorage.getItem('aSpeedBoostPrice') !== null){
+        aSpeedBoostPrice = Number(localStorage.getItem('aSpeedBoostPrice'));
+    }
+
+
+if (localStorage.getItem('aSpeedBoostPrice2') !== null){
+        aSpeedBoostPrice2 = Number(localStorage.getItem('aSpeedBoostPrice2'));
+    }
+
+
+if (localStorage.getItem('strike') !== null){
+        strike = Number(localStorage.getItem('strike'));
+    }
+
+
+if (localStorage.getItem('strike2') !== null){
+        strike2 = Number(localStorage.getItem('strike2'));
+    }
+
+
+if (localStorage.getItem('aHundredBoostCost') !== null){
+        aHundredBoostCost = Number(localStorage.getItem('aHundredBoostCost'));
+    }
+
+
+if (localStorage.getItem('autoSpeed') !== null){
+        autoSpeed = Number(localStorage.getItem('autoSpeed'));
+    }
+
+
+if (localStorage.getItem('aThousandBoostCost') !== null){
+        aThousandBoostCost = Number(localStorage.getItem('aThousandBoostCost'));
+    }
+
+
+if (localStorage.getItem('ThousandACoinAdd') !== null){
+        ThousandACoinAdd = Number(localStorage.getItem('ThousandACoinAdd'));
+    }
+    
+if (localStorage.getItem('autoCoinTimer') !== null){
+        autoCoinTimer = localStorage.getItem('autoCoinTimer') === 'true';
+    }
+
+if (localStorage.getItem('sLock') !== null){
+        sLock = localStorage.getItem('sLock') === 'true';
+    }
+if (localStorage.getItem('sLock2') !== null){
+        sLock2 = localStorage.getItem('sLock2') === 'true';
+    }
+
+if (autoCoinTimer === true) {
+    autoInterval = setInterval(autoCoin, autoSpeed);
+}
+}
+
+
+
+
+function coin(){
+    clickCount += coinClickValue;
+    document.getElementById("currency").innerHTML = formatNumber(clickCount);
+    if(magicCondition === true){
+        magicClicker();
+    }
+    
+    saveGame();
+}
+
+
+function boost(){
+        if (clickCount >= price){
+            clickCount -= price
+            document.getElementById("currency").innerHTML = formatNumber(clickCount);
+            
+            coinClickValue += valueAdd;
+            price *= 1.2
+            price = Math.round(price);
+            
+            document.getElementById("cost").innerHTML =  "Costs: " + formatNumber(price) + " Coins"
+             document.getElementById("coinButton").innerHTML = formatNumber(coinClickValue) + " coins<br><br>+" + formatNumber(aCoin) + " Per Second"
+             saveGame();
+        }
+    }
+    
+    function tenBoost(){
+        if(clickCount >= tenAddPrice){
+            clickCount -= tenAddPrice    
+            document.getElementById("currency").innerHTML = formatNumber(clickCount);
+            
+
+            coinClickValue += tenValueAdd;
+            tenAddPrice *= 1.2
+            tenAddPrice = Math.round(tenAddPrice);
+            document.getElementById("tenCost").innerHTML= "cost: " + formatNumber(tenAddPrice) + " coins"
+            document.getElementById("coinButton").innerHTML = formatNumber(coinClickValue) + " coins<br><br>+" + formatNumber(aCoin) + " Per Second"
+            saveGame();
+        }
+    }
+
+        function hundredBoost(){
+        if(clickCount >= hundredAddPrice){
+            clickCount -= hundredAddPrice    
+            document.getElementById("currency").innerHTML = formatNumber(clickCount);
+            
+            coinClickValue += hundredValueAdd;
+            hundredAddPrice *= 1.2
+            hundredAddPrice = Math.round(hundredAddPrice);
+            document.getElementById("hundredCost").innerHTML= "cost: " + formatNumber(hundredAddPrice) + " coins"
+            document.getElementById("coinButton").innerHTML = formatNumber(coinClickValue) + " coins<br><br>+" + formatNumber(aCoin) + " Per Second"
+            saveGame();
+        }
+    }
+
+    function auto(){
+        if (clickCount >= aCoinPrice){
+        clickCount -= aCoinPrice;
+        document.getElementById("currency").innerHTML = formatNumber(clickCount);
+       
+        clearInterval(autoInterval);
+        autoInterval = setInterval(autoCoin, autoSpeed);
+        aCoin += 1;
+
+        autoCoinTimer = true;
+        autoChecking();
+        
+        document.getElementById("coinButton").innerHTML = formatNumber(coinClickValue) + " coins<br><br>+" + formatNumber(aCoin) + " Per Second"
+         saveGame();
+        }
+    }
+
+
+
+    function tenAuto(){
+        if(clickCount >= tenAutoCoinPrice){
+            clickCount -= aCoinPrice;
+            document.getElementById("currency").innerHTML = formatNumber(clickCount);
+            aCoin += tenACoinAdd
+            
+        tenAutoCoinPrice *= 1.2
+        tenAutoCoinPrice = Math.round(tenAutoCoinPrice);
+        document.getElementById("tenAutoCoinCost").innerHTML= "cost: " + formatNumber(tenAutoCoinPrice) + " coins"
+        document.getElementById("coinButton").innerHTML = formatNumber(coinClickValue) + " coins<br><br>+" + formatNumber(aCoin) + " Per Second"
+        saveGame();
+        }
+    }
+    
+    function autoCoin(){
+    if(autoCoinTimer === true){
+        clickCount += aCoin
+        document.getElementById("currency").innerHTML = formatNumber(clickCount);
+    }
+    }
+        
+    function mult(){
+        if (clickCount >= multPrice){
+            clickCount -= multPrice
+    document.getElementById("currency").innerHTML= formatNumber(clickCount);
+            coinClickValue *= double;
+            valueAdd *= double;
+            tenValueAdd *= double;
+            hundredValueAdd *= double;
+            aCoin *= double;
+            tenACoinAdd *= double;
+            hundredACoinAdd *= double;
+            ThousandACoinAdd *= double;
+            multPrice *= 4;
+            
+            multPrice = Math.round(multPrice);
+            document.getElementById("multCost").innerHTML = "Cost: " + formatNumber(multPrice) + " Coins"
+    document.getElementById("coinButton").innerHTML = formatNumber(coinClickValue) + " Coins<br><br>+" + formatNumber(aCoin) + " Per Second"
+    saveGame();
+        }
+    }
+    
+    
+    
+    
+
+document.getElementById("coinButton").onclick = coin;
+document.getElementById("firstBoost").onclick = boost;
+document.getElementById("plusTen").onclick = tenBoost;
+document.getElementById("multiply").onclick = mult;
+document.getElementById("autoCoinButton").onclick = auto;
+document.getElementById("tenAutoCoinButton").onclick = tenAuto;
+
+let diamonds = 10000000000000000000000;
+let convertedCoin = 0;
+let aSpeedBoostPrice = 1000;
+let aSpeedBoostPrice2 = 10000;
+let warnInterval;
+let strike = 0;
+let strike2 = 0;
+let aHundredBoostCost = 10;
+let aThousandBoostCost = 1000;
+let ThousandACoinAdd = 1000;
+
+let sLock = false;
+let sLock2 = false;
+
+let sCondition = null;
+let sCondition2 = null;
+
+function convert(){
+
+let convertingCoin = document.getElementById("converter").value
+
+    if (convertingCoin > clickCount){
+        document.getElementById("warn").innerHTML="You're too poor."
+        
+        clearInterval(warnInterval);
+        
+        warnInterval = setInterval(removeStuff, 1500);
+        
+        
+    } else if (convertingCoin >= 1000){
+    
+        convertedCoin = convertingCoin / 1000;
+        diamonds += convertedCoin;
+        clickCount -= convertingCoin;
+        document.getElementById("currency").innerHTML = formatNumber(clickCount);
+        document.getElementById("totalDiamonds").innerHTML="Your Diamonds: " + formatNumber(diamonds);
+        
+    }
+    saveGame();
+}
+
+function convertAll(){
+
+    if (clickCount < 1000){
+        document.getElementById("warn").innerHTML="You're too poor."
+        
+        clearInterval(warnInterval);
+        
+        warnInterval = setInterval(removeStuff, 1500);
+        
+        
+    } else if (clickCount >= 1000){
+        convertedCoin = clickCount/1000;
+        diamonds += convertedCoin;
+        clickCount = 0;
+    document.getElementById("currency").innerHTML = formatNumber(clickCount);
+    document.getElementById("totalDiamonds").innerHTML="Your Diamonds: " + formatNumber(diamonds);
+    
+    }
+    saveGame();
+}
+
+function removeStuff(){
+    document.getElementById("warn").innerHTML=" "
+    clearInterval(warnInterval);
+}
+
+
+
+
+
+
+function restartAutoClicker() {
+    if (autoCoinTimer === true) {
+        clearInterval(autoInterval);
+        autoInterval = setInterval(autoCoin, autoSpeed);
+        
+    }
+}
+
+
+function aClickerSpeed(){
+    
+    if (diamonds >= aSpeedBoostPrice){
+        diamonds -= aSpeedBoostPrice;
+
+        aSpeedBoostPrice *= 1.5;
+
+        strike += 1;
+
+        document.getElementById("totalDiamonds").innerHTML="Your Diamonds: " + formatNumber(diamonds);
+
+        document.getElementById("speedCost").innerHTML="costs: " + formatNumber(aSpeedBoostPrice);
+
+        document.getElementById("strikes").innerHTML= "(" + strike + "/3)";
+
+        autoSpeed -= 300;
+        restartAutoClicker();
+        
+    } 
+    
+    if (strike >= 3){
+        sLock = true;
+        document.getElementById("aSpeedBoost").disabled = true;
+        document.getElementById("strikes").innerHTML= "MAX";
+        document.getElementById("speedCost").innerHTML=" ";
+        document.getElementById("tier2Speed").disabled = false;
+        
+    }
+    saveGame();
+}
+
+
+
+function speedTier2(){
+    if (diamonds >= aSpeedBoostPrice2){
+        diamonds -= aSpeedBoostPrice2;
+        aSpeedBoostPrice2 *= 1.5;
+        strike2 += 1;
+        document.getElementById("totalDiamonds").innerHTML="Your Diamonds: " + formatNumber(diamonds);
+        document.getElementById("speedCost2").innerHTML="costs: " + formatNumber(aSpeedBoostPrice2) + " diamonds";
+        document.getElementById("strikes2").innerHTML= "(" + strike2 + "/3)";
+        autoSpeed -= 30;
+        restartAutoClicker();
+       
+    }
+    if (strike2 >= 3){
+        sLock2 = true; 
+        document.getElementById("tier2Speed").disabled = true;
+        document.getElementById("strikes2").innerHTML= "MAX";
+        document.getElementById("speedCost2").innerHTML=" ";
+        
+    }
+    saveGame();
+}
+
+
+
+function aHundredBoost(){
+    if (diamonds >= aHundredBoostCost){
+        diamonds -= aHundredBoostCost;
+        aHundredBoostCost *= 1.5;
+        aHundredBoostCost = Math.round(aHundredBoostCost);
+        document.getElementById("totalDiamonds").innerHTML="Your Diamonds: " + formatNumber(diamonds);
+        document.getElementById("aHundredPrice").innerHTML="costs: " + formatNumber(aHundredBoostCost) + " diamonds";
+        aCoin += hundredACoinAdd;
+        document.getElementById("coinButton").innerHTML = formatNumber(coinClickValue) + " coins<br><br>+" + formatNumber(aCoin) + " Per Second"
+        
+    }
+    saveGame();
+}
+
+
+
+function aThousandBoost(){
+    if (diamonds >= aThousandBoostCost){
+        diamonds -= aThousandBoostCost;
+        aThousandBoostCost *= 1.5;
+        aThousandBoostCost = Math.round(aThousandBoostCost);
+        document.getElementById("totalDiamonds").innerHTML="Your Diamonds: " + formatNumber(diamonds);
+        document.getElementById("aThousandPrice").innerHTML="costs: " + formatNumber(aThousandBoostCost) + " diamonds";
+        
+        aCoin += ThousandACoinAdd;
+        document.getElementById("coinButton").innerHTML = formatNumber(coinClickValue) + " coins<br><br>+" + formatNumber(aCoin) + " Per Second"
+        saveGame();
+    }
+}
+
+
+
+function sLocking2(){
+    if (sLock2 == true && strike == 3){
+        document.getElementById("tier2Speed").disabled = true;
+        document.getElementById("strikes2").innerHTML= "MAX";
+        document.getElementById("speedCost2").innerHTML=" ";
+        
+    }
+}
+
+function sLocking(){
+    if (sLock == true && strike == 3){
+        document.getElementById("aSpeedBoost").disabled = true;
+        document.getElementById("strikes").innerHTML= "MAX";
+        document.getElementById("speedCost").innerHTML=" ";
+        document.getElementById("tier2Speed").disabled = false;
+        
+    }
+}
+
+    function autoChecking(){
+        if (autoCoinTimer === true){
+        aCondition.disabled = true;
+        document.getElementById("tenAutoCoinButton").disabled = false;
+        document.getElementById("autoCoinCost").innerHTML= "Bought!";
+        }
+    }
+   
+   let magicCondition = false;
+   let mp = 0;
+   let magicLuckPrice = 10;
+   let autoMagicPrice = 500;
+   let addOneValueMagicPrice = 50;
+   let addOneValueAutoMagicPrice = 500;
+   let magicValue = 1;
+    
+    function magicGate(){
+        if (diamonds >= 1_000_000_000){
+            diamonds -= 1_000_000_000;
+             document.getElementById("totalDiamonds").innerHTML="Your Diamonds: " + formatNumber(diamonds);
+            
+            magicCondition = true;
+            magicMaker();
+            
+        }
+    }
+    function magicMaker(){
+        if (magicCondition === true){
+            let magicTable = document.getElementById("magicTable");
+            magicTable.innerHTML=`<tr>
+                <td colspan="2">
+                    <h1 id="mpBanner">🔮Magic Points🔮</h1><p>Obtain Magic Points (MP) when clicking <br><br> 1/10 chances of obtaining <br><br><span style="font-size: 10px;">(auto clicker can't give MP but can be changed with an upgrade)</span></p>
+                     <h3 id="mpBanner2">⚙️MP upgrades⚙️</h3>
+                     <p id="totalMagicPoints">Your MP: ${formatNumber(mp)} </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="magicLuckUpgrade()" id="mLuckBtn">Better luck</button><p id="luckUpgradeCost" style="margin-bottom:0px;">Costs: ${formatNumber(magicLuckPrice)} MP</p><p id="mLuckStrikes" style="margin-top:0px;">0/4</p>
+                </td>
+                <td>
+                    <button onclick="autoMagic()">Magic Autoclicker</button><p>Costs: ${formatNumber(autoMagicPrice)} MP</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="moreMp()">+1MP per click</button><p>Costs: ${formatNumber(addOneValueMagicPrice)} MP</p>
+                </td>
+                <td>
+                    <button onclick="acMpIncrease()" disabled>+1MP autoclicker</button><p>Costs: ${formatNumber(addOneValueAutoMagicPrice)} MP</p>
+                </td>
+            </tr>
+            <tr id="runeUpgrades"></tr>`
+        }
+    }
+    
+    let magicChance = 10;
+    let gainMagic = 0;
+    let magicLuckStrike = 0;
+    
+    function magicClicker(){
+        gainMagic = Math.floor(Math.random()*magicChance)+1 
+        if (gainMagic === 1){
+            mp += magicValue;
+            document.getElementById("totalMagicPoints").innerHTML=`Your Mp: ${formatNumber(mp)} MP`
+        }
+    }
+    
+    function magicLuckUpgrade(){
+        if (mp >= magicLuckPrice){
+            mp -= magicLuckPrice;
+            magicLuckPrice *= 1.2;
+            magicChance -= 2;
+            magicLuckStrike += 1;
+            magicLuckPrice = Math.round(magicLuckPrice);
+            document.getElementById("totalMagicPoints").innerHTML=`Your Mp: ${formatNumber(mp)} MP`
+            document.getElementById("luckUpgradeCost").innerHTML=`Costs: ${magicLuckPrice} MP`  
+            document.getElementById("mLuckStrikes").innerHTML=`${magicLuckStrike}/4`    
+            magicLuckStrikes();
+        }
+    }
+    
+    function magicPricer(){
+        document.getElementById("luckUpgradeCost").innerHTML=`Costs: ${magicLuckPrice} MP`
+    }
+    
+    function magicLuckStrikes(){
+        if (magicLuckStrike === 4){
+            document.getElementById("mLuckStrikes").remove();
+            document.getElementById("luckUpgradeCost").innerHTML="MAX"
+            document.getElementById("mLuckBtn").disabled = true;
+        }
+    }
+
+loadGame();
+document.getElementById("currency").innerHTML = formatNumber(clickCount);
+
+document.getElementById("coinButton").innerHTML = formatNumber(coinClickValue) + " coins<br><br>+" + formatNumber(aCoin) + " Per Second"
+
+document.getElementById("cost").innerHTML =  "Costs: " + formatNumber(price) + " Coins";
+
+document.getElementById("tenCost").innerHTML= "cost: " + formatNumber(tenAddPrice) + " coins";
+
+document.getElementById("hundredCost").innerHTML= "cost: " + formatNumber(hundredAddPrice) + " coins";
+
+autoChecking();
+
+restartAutoClicker();
+
+document.getElementById("tenAutoCoinCost").innerHTML= "cost: " + formatNumber(tenAutoCoinPrice) + " coins";
+
+document.getElementById("multCost").innerHTML = "Cost: " + formatNumber(multPrice) + " Coins";
+
+document.getElementById("totalDiamonds").innerHTML="Your Diamonds: " + formatNumber(diamonds);
+
+document.getElementById("speedCost").innerHTML="costs: " + formatNumber(aSpeedBoostPrice) + " diamonds";
+
+document.getElementById("strikes").innerHTML= "(" + strike + "/3)";
+
+document.getElementById("speedCost2").innerHTML="costs: " + formatNumber(aSpeedBoostPrice2) + " diamonds";
+
+document.getElementById("strikes2").innerHTML= "(" + strike2 + "/3)";
+
+document.getElementById("aHundredPrice").innerHTML="costs: " + formatNumber(aHundredBoostCost) + " diamonds";
+
+document.getElementById("aThousandPrice").innerHTML="costs: " + formatNumber(aThousandBoostCost) + " diamonds";
+
+sLocking();
+sLocking2();
+
+
+</script>
+</html>
